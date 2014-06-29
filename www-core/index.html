@@ -38,6 +38,7 @@ input {
     background: yellow;
     padding: 0;
     margin: 0;
+    z-index: 1;
 }
 
 #float, input {
@@ -120,7 +121,7 @@ input {
 
 #answer {
     position: absolute;
-    top: 350px;
+    top: 150px;
     right: 0;
     width: 50%;
     bottom: 532px;
@@ -129,17 +130,21 @@ input {
     color: blue;
     background: blue;
 }
+#answer span.revealed {
+    background: transparent;
+}
 
 #float {
     position: absolute;
-    xtop: -500px;
-    background: rgba(255,0,0,0.3);
-    color: black;
+    top: 0px;
     opacity: 0;
+    background-color: transparent;
+    z-index: 0;
     -moz-transition: -moz-transform 0.3s ease-in-out;
 }
 #float.show {
     opacity: 1.0;
+    z.index: 2;
 }
 
 
@@ -157,7 +162,7 @@ input {
 </head>
 <body>
 <h1><span>Five Words</span><button>snd</button></h1>
-<div id="clue">Hamlet’s advice to Ophelia</div>
+<div id="clue"> </div>
 <div id="answer"><span>Mmm</span> <span>mmmm</span> <span>mm</span> <span>m</span> <span>mmmmmmm</span></div>
 <div id="imgblock"></div>
 <div id="current">O</div>
@@ -191,9 +196,9 @@ input {
     <span>Z</span>
   </div>
 </div>
-<input autofocus>
+<input autofocus id="answerinput">
 <div id="keyboard">iphone keyboard</div>
-<span id="float"></span>
+<input id="float">
 <script>
 var ANS = {};
 var x = new XMLHttpRequest();
@@ -201,15 +206,19 @@ x.open("GET", "answers.json", true);
 x.onreadystatechange = function() {
     if (x.readyState == 4) {
         ANS = JSON.parse(x.responseText);
+        choose("A");
     }
 };
 x.send();
 var current = document.getElementById("current"),
-        wrap = document.getElementById("wrap"),
-        wrapow = wrap.offsetWidth,
-        inner = document.getElementById("inner"),
-        float = document.getElementById("float"),
-        level = "O";
+    wrap = document.getElementById("wrap"),
+    wrapow = wrap.offsetWidth,
+    inner = document.getElementById("inner"),
+    float = document.getElementById("float"),
+    level = "A",
+    clue = document.getElementById("clue"),
+    answerinput = document.getElementById("answerinput"),
+    answerspans = document.getElementById("answer").getElementsByTagName("span");
 var dist = inner.offsetWidth - wrap.offsetWidth;
 var showing = false;
 function move(x) {
@@ -228,7 +237,13 @@ function killcurrent() {
     document.getElementById("imgblock").classList.remove("show");
 }
 function choose(letter) {
-    document.body.style.backgroundImage = "url(background-" + letter.toLowerCase() + ".jpg)";
+    level = letter.toUpperCase();
+    clue.innerHTML = ANS[level].clue;
+    for (var i=0; i<5; i++) {
+        answerspans[i].firstChild.nodeValue = ANS[level].template[i];
+    }
+    answerinput.value = "";
+    document.body.style.backgroundImage = "url(bgimages/background-" + letter.toLowerCase() + ".jpg)";
     killcurrent();
 }
 wrap.onmousemove = function(e) { move(e.pageX); };
@@ -240,26 +255,39 @@ wrap.ontouchcancel = function(e) { killcurrent(); };
 current.style.fontSize = Math.min(current.offsetWidth, current.offsetHeight) + "px";
 current.style.lineHeight = current.offsetHeight + "px";
 
-function encrypt(salt, plain) { return plain; }
 document.querySelector("input").onkeyup = function(e) {
     var inp = this;
     var idx = 0;
     ANS[level].answer.forEach(function(cs) {
-        var curv = exports.checksum(exports.strip(ANS[level].clue + inp.value))
+        console.log("checking", inp.value);
+        var curv = exports.checksum(exports.strip(ANS[level].clue + inp.value));
         if (curv == cs) {
-            console.log("got a correct word!", inp.value);
-            return;
-            float.innerHTML = "";
-            float.appendChild(document.createTextNode(inp.value));
+            console.log("checking", inp.value, "and yes!");
+            float.value = inp.value;
             float.style.top = inp.offsetTop + "px";
             float.style.left = inp.offsetLeft + "px";
             float.classList.add("show");
-            var dest = Array.prototype.slice.call(document.querySelectorAll("#answer span"))[idx];
+            var dest = answerspans[idx];
             var smx = inp.offsetLeft + (inp.offsetWidth / 2);
             var dmx = (dest.offsetLeft + dest.offsetParent.offsetLeft) + (dest.offsetWidth / 2);
             var dx = (dmx - (inp.offsetWidth / 2)) - inp.offsetLeft;
             var dy = (dest.offsetTop + dest.offsetParent.offsetTop) - inp.offsetTop;
             float.style.MozTransform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
+            var formattedAnswer = "", tmpl = ANS[level].template[idx], stripped = exports.strip(inp.value);
+            for (var i=0; i<tmpl.length; i++) {
+                if (tmpl.charAt(i) == "A") {
+                    formattedAnswer += stripped.charAt(i).toUpperCase();
+                } else {
+                    formattedAnswer += stripped.charAt(i).toLowerCase();
+                }
+            }
+            inp.value = "";
+            setTimeout(function() {
+                dest.innerHTML = formattedAnswer;
+                dest.classList.add("revealed");
+                float.classList.remove("show");
+                float.style.MozTransform = "translateX(0px) translateY(0px)";
+            }, 300);
         }
         idx += 1;
     });
