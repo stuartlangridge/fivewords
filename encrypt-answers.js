@@ -56,7 +56,10 @@ function computeHashes(answers, callback) {
 if(require.main === module) {
     readAnswers(function(err, answers) {
         computeHashes(answers, function(hashed) {
-            console.log("got hashed", hashed);
+            fs.writeFile("./www-core/answers.json", JSON.stringify(hashed), function(err) {
+                if (err) throw err;
+                console.log("Written OK.");
+            });
         });
     });
 }

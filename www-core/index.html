@@ -4,6 +4,7 @@
 <meta charset=utf8>
 <title>Five Words</title>
 <meta name="viewport" content="width=device-width, user-scalable=no, minimal-ui">
+<script src="utils.js"></script>
 <style>
 body {
     background: url(background-o.jpg) top left no-repeat;
@@ -242,10 +243,12 @@ current.style.lineHeight = current.offsetHeight + "px";
 function encrypt(salt, plain) { return plain; }
 document.querySelector("input").onkeyup = function(e) {
     var inp = this;
-    var stripped = this.value.toLowerCase().replace(/[^a-z]/g, "");
     var idx = 0;
-    ANS[level].words.forEach(function(word) {
-        if (encrypt(ANS[level].clue, stripped) == word) {
+    ANS[level].answer.forEach(function(cs) {
+        var curv = exports.checksum(exports.strip(ANS[level].clue + inp.value))
+        if (curv == cs) {
+            console.log("got a correct word!", inp.value);
+            return;
             float.innerHTML = "";
             float.appendChild(document.createTextNode(inp.value));
             float.style.top = inp.offsetTop + "px";
