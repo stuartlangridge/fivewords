@@ -1,0 +1,106 @@
+{
+    "A": {
+        "answer": "A Aa aaa AAAA Aaaaa", 
+        "clue": "Answer is A Aa aaa AAAA Aaaaa"
+    }, 
+    "C": {
+        "answer": "C Cc ccc CCCC Ccccc", 
+        "clue": "Answer is C Cc ccc CCCC Ccccc"
+    }, 
+    "B": {
+        "answer": "B Bb bbb BBBB Bbbbb", 
+        "clue": "Answer is B Bb bbb BBBB Bbbbb"
+    }, 
+    "E": {
+        "answer": "E Ee eee EEEE Eeeee", 
+        "clue": "Answer is E Ee eee EEEE Eeeee"
+    }, 
+    "D": {
+        "answer": "D Dd ddd DDDD Ddddd", 
+        "clue": "Answer is D Dd ddd DDDD Ddddd"
+    }, 
+    "G": {
+        "answer": "G Gg ggg GGGG Ggggg", 
+        "clue": "Answer is G Gg ggg GGGG Ggggg"
+    }, 
+    "F": {
+        "answer": "F Ff fff FFFF Fffff", 
+        "clue": "Answer is F Ff fff FFFF Fffff"
+    }, 
+    "I": {
+        "answer": "I Ii iii IIII Iiiii", 
+        "clue": "Answer is I Ii iii IIII Iiiii"
+    }, 
+    "H": {
+        "answer": "H Hh hhh HHHH Hhhhh", 
+        "clue": "Answer is H Hh hhh HHHH Hhhhh"
+    }, 
+    "K": {
+        "answer": "K Kk kkk KKKK Kkkkk", 
+        "clue": "Answer is K Kk kkk KKKK Kkkkk"
+    }, 
+    "J": {
+        "answer": "J Jj jjj JJJJ Jjjjj", 
+        "clue": "Answer is J Jj jjj JJJJ Jjjjj"
+    }, 
+    "M": {
+        "answer": "M Mm mmm MMMM Mmmmm", 
+        "clue": "Answer is M Mm mmm MMMM Mmmmm"
+    }, 
+    "L": {
+        "answer": "L Ll lll LLLL Lllll", 
+        "clue": "Answer is L Ll lll LLLL Lllll"
+    }, 
+    "O": {
+        "answer": "O Oo ooo OOOO Ooooo", 
+        "clue": "Answer is O Oo ooo OOOO Ooooo"
+    }, 
+    "N": {
+        "answer": "N Nn nnn NNNN Nnnnn", 
+        "clue": "Answer is N Nn nnn NNNN Nnnnn"
+    }, 
+    "Q": {
+        "answer": "Q Qq qqq QQQQ Qqqqq", 
+        "clue": "Answer is Q Qq qqq QQQQ Qqqqq"
+    }, 
+    "P": {
+        "answer": "P Pp ppp PPPP Ppppp", 
+        "clue": "Answer is P Pp ppp PPPP Ppppp"
+    }, 
+    "S": {
+        "answer": "S Ss sss SSSS Sssss", 
+        "clue": "Answer is S Ss sss SSSS Sssss"
+    }, 
+    "R": {
+        "answer": "R Rr rrr RRRR Rrrrr", 
+        "clue": "Answer is R Rr rrr RRRR Rrrrr"
+    }, 
+    "U": {
+        "answer": "U Uu uuu UUUU Uuuuu", 
+        "clue": "Answer is U Uu uuu UUUU Uuuuu"
+    }, 
+    "T": {
+        "answer": "T Tt ttt TTTT Ttttt", 
+        "clue": "Answer is T Tt ttt TTTT Ttttt"
+    }, 
+    "W": {
+        "answer": "W Ww www WWWW Wwwww", 
+        "clue": "Answer is W Ww www WWWW Wwwww"
+    }, 
+    "V": {
+        "answer": "V Vv vvv VVVV Vvvvv", 
+        "clue": "Answer is V Vv vvv VVVV Vvvvv"
+    }, 
+    "Y": {
+        "answer": "Y Yy yyy YYYY Yyyyy", 
+        "clue": "Answer is Y Yy yyy YYYY Yyyyy"
+    }, 
+    "X": {
+        "answer": "X Xx xxx XXXX Xxxxx", 
+        "clue": "Answer is X Xx xxx XXXX Xxxxx"
+    }, 
+    "Z": {
+        "answer": "Z Zz zzz ZZZZ Zzzzz", 
+        "clue": "Answer is Z Zz zzz ZZZZ Zzzzz"
+    }
+}

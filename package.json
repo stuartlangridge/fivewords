@@ -1,0 +1,23 @@
+{
+  "name": "fivewords",
+  "version": "0.0.0",
+  "description": "A game of five words. Requires thinking, cooperation, and guesswork.",
+  "main": "build.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/stuartlangridge/fivewords.git"
+  },
+  "keywords": [
+    "puzzle"
+  ],
+  "author": "Stuart Langridge <sil@kryogenix.org>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stuartlangridge/fivewords/issues"
+  },
+  "homepage": "https://github.com/stuartlangridge/fivewords",
+  "dependencies": {}
+}
