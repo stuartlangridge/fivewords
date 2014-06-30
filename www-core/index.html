@@ -160,6 +160,20 @@ input {
     background: white;
 }
 
+#loading {
+    position: absolute;
+    top: 100px;
+    line-height: 100px;
+    text-align: center;
+    width: 200px;
+    left: 50%;
+    margin-left: -100px;
+    height: 100px;
+    background: white;
+    outline: 8000px solid rgba(0,0,0,0.8);
+    z-index: 12;
+}
+
 </style>
 </head>
 <body>
@@ -201,6 +215,7 @@ input {
 <input autofocus id="answerinput">
 <div id="keyboard">iphone keyboard</div>
 <input id="float">
+<div id="loading">loading...</div>
 <script>
 var ANS = {};
 var savedAnswers = localStorage.getItem("fivewords-saved-answers") || "{}";
@@ -215,6 +230,7 @@ x.onreadystatechange = function() {
     if (x.readyState == 4) {
         ANS = JSON.parse(x.responseText);
         choose("A");
+        document.getElementById("loading").style.display = "none";
     }
 };
 x.send();
@@ -274,7 +290,7 @@ document.querySelector("input").onkeyup = function(e) {
     var idx = 0;
     ANS[level].answer.forEach(function(cs) {
         var curv = exports.checksum(exports.strip(ANS[level].clue + inp.value));
-        if (curv == cs && !savedAnswers[level].words[idx]) {
+        if (curv == cs && (!savedAnswers[level] || !savedAnswers[level].words[idx])) {
             float.value = inp.value;
             float.style.top = inp.offsetTop + "px";
             float.style.left = inp.offsetLeft + "px";
