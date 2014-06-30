@@ -136,11 +136,13 @@ input {
 
 #float {
     position: absolute;
-    top: 0px;
+    top: -500px;
     opacity: 0;
     background-color: transparent;
     z-index: 0;
     -moz-transition: -moz-transform 0.3s ease-in-out;
+    -webkit-transition: -webkit-transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
 }
 #float.show {
     opacity: 1.0;
@@ -152,7 +154,7 @@ input {
 #keyboard {
     position: absolute;
     bottom: 0;
-    height: 432px;
+    height: 232px;
     left: 0;
     right: 0;
     background: white;
@@ -161,7 +163,7 @@ input {
 </style>
 </head>
 <body>
-<h1><span>Five Words</span><button>snd</button></h1>
+<h1><span>Five Words</span><button id="reset">reset</button><button>snd</button></h1>
 <div id="clue"> </div>
 <div id="answer"><span>Mmm</span> <span>mmmm</span> <span>mm</span> <span>m</span> <span>mmmmmmm</span></div>
 <div id="imgblock"></div>
@@ -201,6 +203,12 @@ input {
 <input id="float">
 <script>
 var ANS = {};
+var savedAnswers = localStorage.getItem("fivewords-saved-answers") || "{}";
+try {
+    savedAnswers = JSON.parse(savedAnswers) || {};
+} catch(e) {
+    savedAnswers = {};
+}
 var x = new XMLHttpRequest();
 x.open("GET", "answers.json", true);
 x.onreadystatechange = function() {
@@ -240,7 +248,13 @@ function choose(letter) {
     level = letter.toUpperCase();
     clue.innerHTML = ANS[level].clue;
     for (var i=0; i<5; i++) {
-        answerspans[i].firstChild.nodeValue = ANS[level].template[i];
+        if (savedAnswers[level] && savedAnswers[level].words && savedAnswers[level].words[i]) {
+            answerspans[i].classList.add("revealed");
+            answerspans[i].firstChild.nodeValue = savedAnswers[level].words[i];
+        } else {
+            answerspans[i].classList.remove("revealed");
+            answerspans[i].firstChild.nodeValue = ANS[level].template[i];
+        }
     }
     answerinput.value = "";
     document.body.style.backgroundImage = "url(bgimages/background-" + letter.toLowerCase() + ".jpg)";
@@ -259,10 +273,8 @@ document.querySelector("input").onkeyup = function(e) {
     var inp = this;
     var idx = 0;
     ANS[level].answer.forEach(function(cs) {
-        console.log("checking", inp.value);
         var curv = exports.checksum(exports.strip(ANS[level].clue + inp.value));
-        if (curv == cs) {
-            console.log("checking", inp.value, "and yes!");
+        if (curv == cs && !savedAnswers[level].words[idx]) {
             float.value = inp.value;
             float.style.top = inp.offsetTop + "px";
             float.style.left = inp.offsetLeft + "px";
@@ -273,6 +285,8 @@ document.querySelector("input").onkeyup = function(e) {
             var dx = (dmx - (inp.offsetWidth / 2)) - inp.offsetLeft;
             var dy = (dest.offsetTop + dest.offsetParent.offsetTop) - inp.offsetTop;
             float.style.MozTransform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
+            float.style.webkitTransform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
+            float.style.transform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
             var formattedAnswer = "", tmpl = ANS[level].template[idx], stripped = exports.strip(inp.value);
             for (var i=0; i<tmpl.length; i++) {
                 if (tmpl.charAt(i) == "A") {
@@ -282,16 +296,26 @@ document.querySelector("input").onkeyup = function(e) {
                 }
             }
             inp.value = "";
+            if (!savedAnswers[level]) { savedAnswers[level] = {words: []}; }
+            savedAnswers[level].words[idx] = formattedAnswer;
+            localStorage.setItem("fivewords-saved-answers", JSON.stringify(savedAnswers));
             setTimeout(function() {
                 dest.innerHTML = formattedAnswer;
                 dest.classList.add("revealed");
                 float.classList.remove("show");
                 float.style.MozTransform = "translateX(0px) translateY(0px)";
+                float.style.webkitTransform = "translateX(0px) translateY(0px)";
+                float.style.transform = "translateX(0px) translateY(0px)";
             }, 300);
         }
         idx += 1;
     });
 };
+
+document.getElementById("reset").onclick = function() {
+    localStorage.removeItem("fivewords-saved-answers");
+    location.reload();
+}
 
 </script>
 </body>
