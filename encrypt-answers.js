@@ -45,7 +45,7 @@ function computeHashes(answers, callback) {
         });
 
         hashed[k] = {
-            clue: answers[k].clue,
+            clue: encodeURIComponent(answers[k].clue),
             answer: answer,
             template: template
         };
@@ -56,30 +56,10 @@ function computeHashes(answers, callback) {
 if(require.main === module) {
     readAnswers(function(err, answers) {
         computeHashes(answers, function(hashed) {
-            fs.writeFile("./www-core/answers.json", JSON.stringify(hashed), function(err) {
+            fs.writeFile("./www-core/answers.js", "var ANSWERS = " + JSON.stringify(hashed, null, 4), function(err) {
                 if (err) throw err;
                 console.log("Written OK.");
             });
         });
     });
 }
-
-/*
-var hashed = [];
-unhashed.riddles.forEach(function(r) {
-    if (r.clue) {
-        hashed.push({
-            clue: r.clue,
-            answer: utils.checksum(r.answer),
-            explanation: utils.encrypt(r.answer, r.explanation)
-        });
-    } else {
-        hashed.push(r);
-    }
-});
-fs.writeFile("../www/riddles.js",
-    "var riddles = " + JSON.stringify(hashed, undefined, 2) +
-    ";\nvar universal=" + utils.checksum(unhashed.universal) + ";", function(err) {
-    console.log("Written as requested.");
-});
-*/
