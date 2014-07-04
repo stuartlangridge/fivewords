@@ -1,0 +1,338 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf8>
+<title>Five Words</title>
+<meta name="viewport" content="width=device-width, user-scalable=no, minimal-ui">
+<script src="utils.js"></script>
+<style>
+body {
+    background: url(background-o.jpg) top left no-repeat;
+}
+h1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    text-align: center;
+    font-size: 44px;
+    line-height: 50px;
+    background: rgba(255,190,0,0.9);
+    margin: 0;
+    padding: 0;
+}
+h1 button {
+    margin: 2px 4px 0 0;
+    float: right;
+    height: 44px;
+    width: 44px;
+    background: red;
+    border-width: 0;
+}
+input {
+    position: absolute;
+    bottom: 432px; /* iphone 5 */
+    left: 0;
+    border-width: 0;
+    background: yellow;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+}
+
+#float, input {
+    text-align: center;
+    line-height: 50px;
+    font-family: sans-serif;
+}
+#float, input, #answer span {
+    text-align: center;
+    font-size: 45px;
+    height: 50px;
+    width: 100%;
+}
+
+    #current {
+      position: absolute;
+      bottom: 542px;
+      top: 60px;
+      left: 0;
+      font-size: 30px;
+      width: 50%;
+      text-align: center;
+      color: green;
+    }
+    #wrap {
+      position: absolute;
+      bottom: 482px;
+      left: 0;
+      right: 0;
+      overflow: hidden;
+    }
+    #inner {
+      width: 1352px; /* 52 * 26 */
+      height: 52px;
+      margin-left: 0px;
+    }
+    #inner span {
+      text-align: center;
+      line-height: 40px;
+      font-size: 36px;
+      padding: 5px 6px;
+      display: block;
+      float: left;
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.9);
+    }
+
+#imgblock {
+    position: absolute;
+    opacity: 0;
+    top: 50px;
+    bottom: 532px;
+    left: 0;
+    right: 0;
+    background: #eee;
+    -webkit-transition: opacity 0.2s ease;
+    -moz-transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease;
+}
+#imgblock.show {
+    opacity: 0.9;
+    -webkit-transition: opacity 1s ease;
+    -moz-transition: opacity 1s ease;
+    transition: opacity 1s ease;
+}
+
+#clue {
+    font-size: 36px;
+    line-height: 1.4;
+}
+
+#clue {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 50%;
+    bottom: 532px;
+}
+
+#answer {
+    position: absolute;
+    top: 150px;
+    right: 0;
+    width: 50%;
+    bottom: 532px;
+}
+#answer span {
+    color: blue;
+    background: blue;
+}
+#answer span.revealed {
+    background: transparent;
+}
+
+#float {
+    position: absolute;
+    top: -500px;
+    opacity: 0;
+    background-color: transparent;
+    z-index: 0;
+    -moz-transition: -moz-transform 0.3s ease-in-out;
+    -webkit-transition: -webkit-transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
+}
+#float.show {
+    opacity: 1.0;
+    z.index: 2;
+}
+
+
+
+#keyboard {
+    position: absolute;
+    bottom: 0;
+    height: 232px;
+    left: 0;
+    right: 0;
+    background: white;
+}
+
+#loading {
+    position: absolute;
+    top: 100px;
+    line-height: 100px;
+    text-align: center;
+    width: 200px;
+    left: 50%;
+    margin-left: -100px;
+    height: 100px;
+    background: white;
+    outline: 8000px solid rgba(0,0,0,0.8);
+    z-index: 12;
+}
+
+</style>
+</head>
+<body>
+<h1><span>Five Words</span><button id="reset">reset</button><button>snd</button></h1>
+<div id="clue"> </div>
+<div id="answer"><span>Mmm</span> <span>mmmm</span> <span>mm</span> <span>m</span> <span>mmmmmmm</span></div>
+<div id="imgblock"></div>
+<div id="current">O</div>
+<div id="wrap">
+  <div id="inner">
+    <span>A</span>
+    <span>B</span>
+    <span>C</span>
+    <span>D</span>
+    <span>E</span>
+    <span>F</span>
+    <span>G</span>
+    <span>H</span>
+    <span>I</span>
+    <span>J</span>
+    <span>K</span>
+    <span>L</span>
+    <span>M</span>
+    <span>N</span>
+    <span>O</span>
+    <span>P</span>
+    <span>Q</span>
+    <span>R</span>
+    <span>S</span>
+    <span>T</span>
+    <span>U</span>
+    <span>V</span>
+    <span>W</span>
+    <span>X</span>
+    <span>Y</span>
+    <span>Z</span>
+  </div>
+</div>
+<input autofocus id="answerinput">
+<div id="keyboard">iphone keyboard</div>
+<input id="float">
+<div id="loading">loading...</div>
+<script>
+var ANS = {};
+var savedAnswers = localStorage.getItem("fivewords-saved-answers") || "{}";
+try {
+    savedAnswers = JSON.parse(savedAnswers) || {};
+} catch(e) {
+    savedAnswers = {};
+}
+var x = new XMLHttpRequest();
+x.open("GET", "answers.json", true);
+x.onreadystatechange = function() {
+    if (x.readyState == 4) {
+        ANS = JSON.parse(x.responseText);
+        choose("A");
+        document.getElementById("loading").style.display = "none";
+    }
+};
+x.send();
+var current = document.getElementById("current"),
+    wrap = document.getElementById("wrap"),
+    wrapow = wrap.offsetWidth,
+    inner = document.getElementById("inner"),
+    float = document.getElementById("float"),
+    level = "A",
+    clue = document.getElementById("clue"),
+    answerinput = document.getElementById("answerinput"),
+    answerspans = document.getElementById("answer").getElementsByTagName("span");
+var dist = inner.offsetWidth - wrap.offsetWidth;
+var showing = false;
+function move(x) {
+    if (!showing) {
+        showing = true;
+        document.getElementById("imgblock").classList.add("show");
+    }
+    var frac = (x / wrapow);
+    var disp = frac * dist;
+    inner.style.marginLeft = -disp + "px";
+    var letter = Math.round((frac * 26) - 0.5);
+    current.innerHTML = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[letter];
+}
+function killcurrent() {
+    showing = false;
+    document.getElementById("imgblock").classList.remove("show");
+}
+function choose(letter) {
+    level = letter.toUpperCase();
+    clue.innerHTML = ANS[level].clue;
+    for (var i=0; i<5; i++) {
+        if (savedAnswers[level] && savedAnswers[level].words && savedAnswers[level].words[i]) {
+            answerspans[i].classList.add("revealed");
+            answerspans[i].firstChild.nodeValue = savedAnswers[level].words[i];
+        } else {
+            answerspans[i].classList.remove("revealed");
+            answerspans[i].firstChild.nodeValue = ANS[level].template[i];
+        }
+    }
+    answerinput.value = "";
+    document.body.style.backgroundImage = "url(bgimages/background-" + letter.toLowerCase() + ".jpg)";
+    killcurrent();
+}
+wrap.onmousemove = function(e) { move(e.pageX); };
+wrap.ontouchmove = function(e) { move(e.touches[0].pageX); e.preventDefault(); };
+wrap.onmouseleave = function(e) { choose(document.getElementById("current").innerHTML); };
+wrap.ontouchend = function(e) { choose(document.getElementById("current").innerHTML); };
+wrap.ontouchcancel = function(e) { killcurrent(); };
+
+current.style.fontSize = Math.min(current.offsetWidth, current.offsetHeight) + "px";
+current.style.lineHeight = current.offsetHeight + "px";
+
+document.querySelector("input").onkeyup = function(e) {
+    var inp = this;
+    var idx = 0;
+    ANS[level].answer.forEach(function(cs) {
+        var curv = exports.checksum(exports.strip(ANS[level].clue + inp.value));
+        if (curv == cs && (!savedAnswers[level] || !savedAnswers[level].words[idx])) {
+            float.value = inp.value;
+            float.style.top = inp.offsetTop + "px";
+            float.style.left = inp.offsetLeft + "px";
+            float.classList.add("show");
+            var dest = answerspans[idx];
+            var smx = inp.offsetLeft + (inp.offsetWidth / 2);
+            var dmx = (dest.offsetLeft + dest.offsetParent.offsetLeft) + (dest.offsetWidth / 2);
+            var dx = (dmx - (inp.offsetWidth / 2)) - inp.offsetLeft;
+            var dy = (dest.offsetTop + dest.offsetParent.offsetTop) - inp.offsetTop;
+            float.style.MozTransform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
+            float.style.webkitTransform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
+            float.style.transform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
+            var formattedAnswer = "", tmpl = ANS[level].template[idx], stripped = exports.strip(inp.value);
+            for (var i=0; i<tmpl.length; i++) {
+                if (tmpl.charAt(i) == "A") {
+                    formattedAnswer += stripped.charAt(i).toUpperCase();
+                } else {
+                    formattedAnswer += stripped.charAt(i).toLowerCase();
+                }
+            }
+            inp.value = "";
+            if (!savedAnswers[level]) { savedAnswers[level] = {words: []}; }
+            savedAnswers[level].words[idx] = formattedAnswer;
+            localStorage.setItem("fivewords-saved-answers", JSON.stringify(savedAnswers));
+            setTimeout(function() {
+                dest.innerHTML = formattedAnswer;
+                dest.classList.add("revealed");
+                float.classList.remove("show");
+                float.style.MozTransform = "translateX(0px) translateY(0px)";
+                float.style.webkitTransform = "translateX(0px) translateY(0px)";
+                float.style.transform = "translateX(0px) translateY(0px)";
+            }, 300);
+        }
+        idx += 1;
+    });
+};
+
+document.getElementById("reset").onclick = function() {
+    localStorage.removeItem("fivewords-saved-answers");
+    location.reload();
+}
+
+</script>
+</body>
+</html>
