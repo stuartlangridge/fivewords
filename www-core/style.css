@@ -1,3 +1,11 @@
+#root {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
 #maininput.game {
   position: absolute;
   top: auto;
@@ -13,15 +21,66 @@
   font-size: 30px;
   line-height: 30px;
   text-align: center;
+  z-index: 1;
 }
 #maininput.begin {
   position: absolute;
   top: 0;
   left: 0;
   border-width: 0;
-  background: yellow;
+  background: white;
   width: 100%;
   height: 100%;
   opacity: 0.2;
   font-size: 1.5em;
+  z-index: 3;
+}
+
+#letterchooser {
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  height: 52px;
+  border: 1px solid red;
+}
+#inner {
+  height: 50px;
+  border: 1px solid blue;
+  width: 1300px; /* 50 * 26 */
+}
+#inner span {
+  border: 1px solid green;
+  display: block;
+  width: 48px;
+  height: 48px;
+  float: left;
+  line-height: 48px;
+  text-align: center;
+  font-size: 48px;
+}
+
+#clue {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: red;
+}
+#answer {
+  position: absolute;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 92px; /* letterchooser + input */
+  background: blue;
+}
+
+#coverall {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #dfd;
+  z-index: 2;
 }
