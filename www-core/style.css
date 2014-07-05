@@ -3,6 +3,8 @@
   src: url('Lekton-Regular.ttf');
 }
 
+html, body { overflow: hidden; }
+
 #root {
   position: absolute;
   top: 0;
@@ -10,22 +12,32 @@
   bottom: 0;
   right: 0;
 }
-#rootbg {
+#rootbg, #letterchooserfadeleft, #letterchooserfaderight {
   position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center center;
-  -webkit-transition: -webkit-filter 0.3s ease;
-  -moz-transition: -moz-filter 0.3s ease;
-  transition: filter 0.3s ease;
+  background-position: top center;
+  /*
   -moz-filter: blur(20px);
   -webkit-filter: blur(20px);
   filter: blur(20px);
+  */
 }
+#rootbg {
+  xbackground: blue !important;
+}
+#letterchooserfadeleft {
+  pointer-events: none;
+  -webkit-clip-path: polygon(0px 30px, 45% 30px, 45% 78px, 0 78px); /* cover letterchooser */
+  -webkit-mask: -webkit-linear-gradient(left, rgba(0,0,0,1) 0, rgba(0,0,0,0.7) 44px, rgba(0,0,0,0.3) 88px, rgba(0,0,0,0) 132px);
+}
+#letterchooserfaderight {
+  pointer-events: none;
+  -webkit-clip-path: polygon(55% 30px, 100% 30px, 100% 78px, 55% 78px); /* cover letterchooser */
+  -webkit-mask: -webkit-linear-gradient(right, rgba(0,0,0,1) 0, rgba(0,0,0,0.7) 44px, rgba(0,0,0,0.3) 88px, rgba(0,0,0,0) 132px);
+}
+
 
 #maininput.game, #floatinginput {
   position: absolute;
@@ -37,7 +49,7 @@
   z-index: 1;
   width: 90%;
   opacity: 1.0;
-  background: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.3);
 }
 #maininput.game, #floatinginput, #answer span {
   border-width: 0;
@@ -50,9 +62,9 @@
 #floatinginput { 
   background: transparent; 
   display: none;
-  -moz-transition: -moz-transform 0.3s ease-in-out, opacity 0.3s linear;
-  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.3s linear;
-  transition: transform 0.3s ease-in-out, opacity 0.3s linear;
+  -moz-transition: -moz-transform 0.3s ease-in-out, opacity 0.3s linear, color 0.3s linear;
+  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.3s linear, color 0.3s linear;
+  transition: transform 0.3s ease-in-out, opacity 0.3s linear, color 0.3s linear;
 }
 #maininput.begin {
   position: absolute;
@@ -78,22 +90,32 @@
 #inner {
   height: 44px;
   width: 1144px; /* 44 * 26 */
+  xpadding-left: 200px;
 }
 #inner span {
   display: block;
   width: 44px;
   height: 44px;
   float: left;
-  line-height: 44px;
+  line-height: 52px;
   text-align: center;
-  font-size: 44px;
+  font-size: 64px;
   font-family: Lekton, monospace;
   color: white;
 }
 
+/*
+#inner span:nth-child(2n) {
+  background: rgba(255,0,0,0.2);
+}
+#inner span:nth-child(2n+1) {
+  background: rgba(0,255,0,0.2);
+}
+*/
+
 #answer {
   position: absolute;
-  top: 74px;
+  top: 94px;
   left: 0;
   right: 0;
   height: 80px;
@@ -103,12 +125,11 @@
 }
 #clue {
   position: absolute;
-  top: 154px;
+  top: 174px;
   left: 0;
   right: 0;
   bottom: 40px; /* input */
   text-align: center;
-  xbackground: #ccf;
   color: white;
 }
 #answer span {

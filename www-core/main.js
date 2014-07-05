@@ -57,33 +57,42 @@ function handleKey(inp) {
                 fi.style.MozTransform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
                 fi.style.webkitTransform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
                 fi.style.transform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
+                fi.style.color = "white";
 
                 var solved = 1;
                 Array.prototype.slice.call(destspans).forEach(function(s) {
                     if (s.className == "revealed") solved += 1;
                 });
 
-                var blur = (5-solved) * 5;
-                console.log(blur);
-
-                rootbg.style.MozFilter = "blur(" + blur + "px)";
-                rootbg.style.webkitFilter = "blur(" + blur + "px)";
-                rootbg.style.filter = "blur(" + blur + "px)";
-
                 setTimeout(function() {
                     fi.style.opacity = 0;
                     destspan.className = "revealed";
+                    setBGForLevel();
                     setTimeout(function() {
                         fi.style.display = "none";
                         fi.style.MozTransform = "translateX(0px) translateY(0px)";
                         fi.style.webkitTransform = "translateX(0px) translateY(0px)";
                         fi.style.transform = "translateX(0px) translateY(0px)";
                         fi.style.opacity = 1;
+                        fi.style.color = "black";
                     }, 300);
                 }, 300);
             }
         }
     };
+}
+
+function setBGForLevel() {
+    var answered = document.querySelectorAll("#answer span.revealed").length;
+    var img = "bgimages/" + "bg-"  + LEVEL.toLowerCase() + "-" + (5-answered) + ".jpg";
+    var i = new Image();
+    i.onload = function() {
+        var imgurl = "url(" + img + ")";
+        document.getElementById("rootbg").style.backgroundImage = imgurl;
+        document.getElementById("letterchooserfadeleft").style.backgroundImage = imgurl;
+        document.getElementById("letterchooserfaderight").style.backgroundImage = imgurl;
+    };
+    i.src = img;
 }
 
 function chooseLetter(e) {
@@ -109,9 +118,7 @@ function chooseLevel(newlevel) {
         ans.appendChild(span);
         ans.appendChild(document.createTextNode(" "));
     }
-    var img = "background-"  + LEVEL.toLowerCase() + ".jpg";
-    if (LEVEL == "A") img = "astro.jpg";
-    document.getElementById("rootbg").style.backgroundImage = "url(bgimages/" + img + ")";
+    setBGForLevel();
 }
 
 function attachEventHandlers(cb) {
