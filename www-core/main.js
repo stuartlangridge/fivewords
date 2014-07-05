@@ -19,7 +19,7 @@ function getInputFocusHandler(inp) {
             document.body.scrollTop = 0;
           } else {
             // Browser readjusts height of screen when keyboard appears
-            inp.style.top = inp.offsetTop + "px";
+            inp.style.top = (inp.offsetTop - parseInt(inp.style.bottom, 10)) + "px";
             inp.style.bottom = "auto";
             document.body.scrollTop = 0;
           }
@@ -30,12 +30,14 @@ function getInputFocusHandler(inp) {
 
 function handleKey(inp) {
     var fi = document.getElementById("floatinginput");
+    var rootbg = document.getElementById("rootbg");
     return function(e) {
         var attempt = exports.checksum(exports.strip(ANSWERS[LEVEL].clue + inp.value)),
             actual = ANSWERS[LEVEL].answer;
         for (var i=0; i<actual.length; i++) {
             if (attempt == actual[i]) {
-                var destspan = document.querySelectorAll("#answer span")[i];
+                var destspans = document.querySelectorAll("#answer span");
+                var destspan = destspans[i];
                 if (destspan.className == "revealed") { return; }
                 var templated_value = "";
                 for (var j=0; j<inp.value.length; j++) {
@@ -46,7 +48,7 @@ function handleKey(inp) {
                     }
                 }
                 fi.value = templated_value;
-                destspan.innerHTML = templated_value;
+                destspan.getElementsByTagName("strong")[0].innerHTML = templated_value;
                 inp.value = "";
                 fi.style.display = "block";
                 var destx = destspan.offsetLeft, desty = destspan.offsetTop + destspan.offsetParent.offsetTop;
@@ -55,6 +57,19 @@ function handleKey(inp) {
                 fi.style.MozTransform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
                 fi.style.webkitTransform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
                 fi.style.transform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
+
+                var solved = 1;
+                Array.prototype.slice.call(destspans).forEach(function(s) {
+                    if (s.className == "revealed") solved += 1;
+                });
+
+                var blur = (5-solved) * 5;
+                console.log(blur);
+
+                rootbg.style.MozFilter = "blur(" + blur + "px)";
+                rootbg.style.webkitFilter = "blur(" + blur + "px)";
+                rootbg.style.filter = "blur(" + blur + "px)";
+
                 setTimeout(function() {
                     fi.style.opacity = 0;
                     destspan.className = "revealed";
@@ -82,10 +97,21 @@ function chooseLevel(newlevel) {
     ans.innerHTML = "";
     for (var i=0; i<ANSWERS[LEVEL].template.length; i++) {
         var span = document.createElement("span");
-        span.appendChild(document.createTextNode(ANSWERS[LEVEL].template[i]));
+        var strong = document.createElement("strong");
+        var b = document.createElement("b");
+        strong.appendChild(document.createTextNode(ANSWERS[LEVEL].template[i]));
+        b.appendChild(document.createTextNode(ANSWERS[LEVEL].template[i]));
+        var em = document.createElement("em");
+        em.appendChild(document.createTextNode(new Array(ANSWERS[LEVEL].template[i].length+1).join("-")));
+        span.appendChild(strong);
+        span.appendChild(em);
+        span.appendChild(b);
         ans.appendChild(span);
         ans.appendChild(document.createTextNode(" "));
     }
+    var img = "background-"  + LEVEL.toLowerCase() + ".jpg";
+    if (LEVEL == "A") img = "astro.jpg";
+    document.getElementById("rootbg").style.backgroundImage = "url(bgimages/" + img + ")";
 }
 
 function attachEventHandlers(cb) {
@@ -98,6 +124,14 @@ function attachEventHandlers(cb) {
     cb();
 }
 
+function checkIOSStandalone(cb) {
+    if (/iphone|ipad|ipod/i.test(navigator.userAgent) && !navigator.standalone) {
+        document.getElementById("coverall").innerHTML = "Add this to your home screen";
+    } else {
+        cb();
+    }
+}
+
 function inSeriesDo() {
     var fns = Array.prototype.slice.call(arguments);
     var next = function() {
@@ -108,6 +142,7 @@ function inSeriesDo() {
 
 function startup() {
     inSeriesDo(
+        checkIOSStandalone,
         attachEventHandlers,
         loadSavedGame,
         function() { chooseLevel("A"); }

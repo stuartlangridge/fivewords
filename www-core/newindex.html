@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title></title>
+<title>five words demo</title>
 <meta name="viewport" content="width=device-width, user-scalable=no, minimal-ui">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="root">
+<div id="root"><div id="rootbg"></div>
     <header>
     </header>
 
@@ -22,10 +23,12 @@
         <span>X</span><span>Y</span><span>Z</span></div></div>
 
     <input id="maininput" type="text" class="begin" autocapitalize="none">
-    <div id="coverall">intro screen</div>
+    <div id="coverall">intro screen. tap to continue.</div>
+    <input id="floatinginput" type="text">
 </div>
 
-<input id="floatinginput" type="text">
+
+<button style="position:absolute;top:0;left:0;z-index:30" onclick="location.reload()">R</button>
 
 <script src="iscroll.js"></script>
 <script src="answers.js"></script>

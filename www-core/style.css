@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Lekton';
+  src: url('Lekton-Regular.ttf');
+}
+
 #root {
   position: absolute;
   top: 0;
@@ -5,18 +10,34 @@
   bottom: 0;
   right: 0;
 }
+#rootbg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-transition: -webkit-filter 0.3s ease;
+  -moz-transition: -moz-filter 0.3s ease;
+  transition: filter 0.3s ease;
+  -moz-filter: blur(20px);
+  -webkit-filter: blur(20px);
+  filter: blur(20px);
+}
 
 #maininput.game, #floatinginput {
   position: absolute;
   top: auto;
-  bottom: 0;
-  left: 0;
+  bottom: 30px;
+  left: 5%;
   margin: 0;
   padding: 0;
   z-index: 1;
-  width: 100%;
+  width: 90%;
   opacity: 1.0;
-  background: yellow;
+  background: rgba(255,255,255,0.6);
 }
 #maininput.game, #floatinginput, #answer span {
   border-width: 0;
@@ -24,15 +45,16 @@
   font-size: 30px;
   line-height: 30px;
   text-align: center;
-  font-family: sans-serif;
+  font-family: Lekton, monospace;
 }
 #floatinginput { 
   background: transparent; 
-  display: none; 
+  display: none;
   -moz-transition: -moz-transform 0.3s ease-in-out, opacity 0.3s linear;
   -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.3s linear;
   transition: transform 0.3s ease-in-out, opacity 0.3s linear;
-}#maininput.begin {
+}
+#maininput.begin {
   position: absolute;
   top: 0;
   left: 0;
@@ -47,58 +69,71 @@
 
 #letterchooser {
   position: absolute;
-  bottom: 40px;
+  top: 30px;
   left: 0;
   right: 0;
   overflow: hidden;
-  height: 52px;
-  border: 1px solid red;
+  height: 44px;
 }
 #inner {
-  height: 50px;
-  border: 1px solid blue;
-  width: 1300px; /* 50 * 26 */
+  height: 44px;
+  width: 1144px; /* 44 * 26 */
 }
 #inner span {
-  border: 1px solid green;
   display: block;
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   float: left;
-  line-height: 48px;
+  line-height: 44px;
   text-align: center;
-  font-size: 48px;
+  font-size: 44px;
+  font-family: Lekton, monospace;
+  color: white;
 }
 
-#clue {
+#answer {
   position: absolute;
-  top: 0;
+  top: 74px;
   left: 0;
   right: 0;
   height: 80px;
-  background: #fcc;
+  text-align: center;
+  font-family: Lekton, monospace;
+  color: white;
 }
-#answer {
+#clue {
   position: absolute;
-  top: 80px;
+  top: 154px;
   left: 0;
   right: 0;
-  bottom: 92px; /* letterchooser + input */
-  background: #ccf;
+  bottom: 40px; /* input */
+  text-align: center;
+  xbackground: #ccf;
+  color: white;
 }
 #answer span {
-  background: blue;
-  color: blue;
+  position: relative;
 }
-#answer span.revealed {
-  background: transparent;
-  color: black;
-  opacity: 1;
+#answer span b {
+  color: transparent;
+}
+#answer span em, #answer span strong {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  font-weight: normal;
+  font-variant: normal;
   -moz-transition: opacity 0.3s linear;
   -webkit-transition: opacity 0.3s linear;
   transition: opacity 0.3s linear;
 }
-
+#answer span strong { opacity: 0; }
+#answer span.revealed em {
+  opacity: 0;
+}
+#answer span.revealed strong {
+  opacity: 1;
+  color: white;
+}
 #coverall {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
