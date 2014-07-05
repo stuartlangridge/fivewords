@@ -6,22 +6,25 @@
   right: 0;
 }
 
-#maininput.game {
+#maininput.game, #floatinginput {
   position: absolute;
   top: auto;
   bottom: 0;
   left: 0;
   margin: 0;
   padding: 0;
-  border-width: 0;
-  background: yellow;
+  z-index: 1;
   width: 100%;
-  height: 40px;
   opacity: 1.0;
+  background: yellow;
+}
+#maininput.game, #floatinginput, #answer span {
+  border-width: 0;
+  height: 40px;
   font-size: 30px;
   line-height: 30px;
   text-align: center;
-  z-index: 1;
+  font-family: sans-serif;
 }
 #maininput.begin {
   position: absolute;
@@ -67,7 +70,7 @@
   left: 0;
   right: 0;
   height: 80px;
-  background: red;
+  background: #fcc;
 }
 #answer {
   position: absolute;
@@ -75,7 +78,19 @@
   left: 0;
   right: 0;
   bottom: 92px; /* letterchooser + input */
+  background: #ccf;
+}
+#answer span {
   background: blue;
+  color: blue;
+}
+#answer span.revealed {
+  background: transparent;
+  color: black;
+  opacity: 1;
+  -moz-transition: opacity 0.3s linear;
+  -webkit-transition: opacity 0.3s linear;
+  transition: opacity 0.3s linear;
 }
 
 #coverall {
@@ -83,4 +98,10 @@
   top: 0; left: 0; right: 0; bottom: 0;
   background: #dfd;
   z-index: 2;
+}
+#floatinginput { 
+  background: rgba(0,255,0,0.5); display: none; 
+  -moz-transition: -moz-transform 0.3s ease-in-out, opacity 0.3s linear;
+  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.3s linear;
+  transition: transform 0.3s ease-in-out, opacity 0.3s linear;
 }

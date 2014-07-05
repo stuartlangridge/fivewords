@@ -27,7 +27,7 @@ function computeHashes(answers, callback) {
         var template = [];
         var answer = [];
         answers[k].answer.split(" ").forEach(function(word) {
-            answer.push(utils.checksum(utils.strip(answers[k].clue + word)));
+            answer.push(utils.checksum(utils.strip(encodeURIComponent(answers[k].clue) + word)));
             var wtempl = [];
             for (var i=0; i<word.length; i++) {
                 var l = word.charAt(i);
