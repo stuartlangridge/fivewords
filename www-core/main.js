@@ -53,12 +53,16 @@ function handleKey(inp) {
                 var curx = fi.offsetLeft, cury = fi.offsetTop;
                 var dx = (destx + (destspan.offsetWidth / 2)) - (curx + (fi.offsetWidth / 2)), dy = desty - cury;
                 fi.style.MozTransform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
+                fi.style.webkitTransform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
+                fi.style.transform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
                 setTimeout(function() {
                     fi.style.opacity = 0;
                     destspan.className = "revealed";
                     setTimeout(function() {
                         fi.style.display = "none";
                         fi.style.MozTransform = "translateX(0px) translateY(0px)";
+                        fi.style.webkitTransform = "translateX(0px) translateY(0px)";
+                        fi.style.transform = "translateX(0px) translateY(0px)";
                         fi.style.opacity = 1;
                     }, 300);
                 }, 300);
