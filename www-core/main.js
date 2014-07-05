@@ -126,11 +126,22 @@ function setBGForLevel() {
     var i = new Image();
     i.onload = function() {
         var imgurl = "url(" + img + ")";
+        document.getElementById("rootbgfader").style.backgroundImage = document.getElementById("rootbg").style.backgroundImage;
+        document.getElementById("rootbgfader").style.opacity = 0;
         document.getElementById("rootbg").style.backgroundImage = imgurl;
-        document.getElementById("letterchooserfadeleft").style.backgroundImage = imgurl;
-        document.getElementById("letterchooserfaderight").style.backgroundImage = imgurl;
+        setTimeout(function() {
+            document.getElementById("letterchooserfadeleft").style.backgroundImage = imgurl;
+            document.getElementById("letterchooserfaderight").style.backgroundImage = imgurl;
+            document.getElementById("rootbgfader").style.backgroundImage = "none";
+            document.getElementById("rootbgfader").style.opacity = 1;
+        }, 1300);
     };
     i.src = img;
+}
+
+function resetGame() {
+    localStorage.removeItem("fiveWordsSavedAnswers");
+    location.reload();
 }
 
 function chooseLetter(e) {
@@ -147,7 +158,6 @@ function chooseLevel(newlevel, letterScrollElement) {
         var strong = document.createElement("strong");
         var b = document.createElement("b");
         var textValue = ANSWERS[LEVEL].template[i];
-        console.log("checking", LEVEL.toLowerCase(), i, MYANSWERS[LEVEL.toLowerCase()].answers[i]);
         if (MYANSWERS[LEVEL.toLowerCase()].answers[i]) { 
             textValue = MYANSWERS[LEVEL.toLowerCase()].answers[i]; 
             span.className = "revealed";

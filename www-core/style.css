@@ -12,30 +12,27 @@ html, body { overflow: hidden; }
   bottom: 0;
   right: 0;
 }
-#rootbg, #letterchooserfadeleft, #letterchooserfaderight {
+#rootbg, #rootbgfader, #letterchooserfadeleft, #letterchooserfaderight {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top center;
-  /*
-  -moz-filter: blur(20px);
-  -webkit-filter: blur(20px);
-  filter: blur(20px);
-  */
-}
-#rootbg {
-  xbackground: blue !important;
 }
 #letterchooserfadeleft {
   pointer-events: none;
-  -webkit-clip-path: polygon(0px 30px, 45% 30px, 45% 78px, 0 78px); /* cover letterchooser */
+  -webkit-clip-path: polygon(0px 50px, 45% 50px, 45% 98px, 0 98px); /* cover letterchooser */
   -webkit-mask: -webkit-linear-gradient(left, rgba(0,0,0,1) 0, rgba(0,0,0,0.7) 44px, rgba(0,0,0,0.3) 88px, rgba(0,0,0,0) 132px);
 }
 #letterchooserfaderight {
   pointer-events: none;
-  -webkit-clip-path: polygon(55% 30px, 100% 30px, 100% 78px, 55% 78px); /* cover letterchooser */
+  -webkit-clip-path: polygon(55% 50px, 100% 50px, 100% 98px, 55% 98px); /* cover letterchooser */
   -webkit-mask: -webkit-linear-gradient(right, rgba(0,0,0,1) 0, rgba(0,0,0,0.7) 44px, rgba(0,0,0,0.3) 88px, rgba(0,0,0,0) 132px);
+}
+#rootbgfader {
+  -webkit-transition: opacity 1.3s linear;
+  -moz-transition: opacity 1.3s linear;
+  transition: opacity 1.3s linear;
 }
 
 
@@ -81,7 +78,7 @@ html, body { overflow: hidden; }
 
 #letterchooser {
   position: absolute;
-  top: 30px;
+  top: 50px;
   left: 0;
   right: 0;
   overflow: hidden;
@@ -118,7 +115,7 @@ html, body { overflow: hidden; }
 
 #answer {
   position: absolute;
-  top: 94px;
+  top: 114px;
   left: 0;
   right: 0;
   height: 80px;
@@ -128,7 +125,7 @@ html, body { overflow: hidden; }
 }
 #clue {
   position: absolute;
-  top: 174px;
+  top: 194px;
   left: 0;
   right: 0;
   bottom: 40px; /* input */
@@ -162,5 +159,38 @@ html, body { overflow: hidden; }
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   background: #dfd;
+  z-index: 2;
+}
+
+
+header {
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 44px; background: rgba(0,0,0,0.5);
+  margin: 0;
+  padding: 0;
+}
+header h1 {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  line-height: 44px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  color: white;
+  font-size: 24px;
+  font-weight: normal;
+  z-index: 1;
+}
+header button {
+  position: absolute;
+  top: 0;
+  background: transparent;
+  border-width: 0;
+  color: white;
+  height: 44px;
+  width: 44px;
+  margin: 0 3px;
+  line-height: 40px;
+  font-size: 24px;
   z-index: 2;
 }

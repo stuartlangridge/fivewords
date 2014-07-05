@@ -7,10 +7,8 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="rootbg"></div>
+<div id="rootbg"></div><div id="rootbgfader"></div>
 <div id="root">
-    <header>
-    </header>
 
     <div id="clue"></div>
 
@@ -29,8 +27,13 @@
 </div>
 <div id="letterchooserfadeleft"></div><div id="letterchooserfaderight"></div>
 
+    <header>
+        <button onclick="location.reload()" style="right: 4px">R</button>
+        <button onclick="resetGame()" style="left: 4px">S</button>
+        <h1>Five Words</h1>
+    </header>
 
-<button style="position:absolute;top:0;right:0;z-index:30" onclick="location.reload()">R</button>
+
 
 <script src="iscroll.js"></script>
 <script src="answers.js"></script>
