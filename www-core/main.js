@@ -1,6 +1,35 @@
-var LEVEL = "A";
+var LEVEL = "A", isc, MYANSWERS = {};
 
-function loadSavedGame(cb) { console.log("in loadSavedGame"); cb(); }
+function loadSavedGame(cb) { 
+    "abcdefghijklmnoqrstuvwxyz".split("").forEach(function(l) {
+        MYANSWERS[l] = {answers: [null,null,null,null,null]};
+    });
+    if (localStorage.fiveWordsSavedAnswers) {
+        var sa;
+        try {
+            sa = JSON.parse(localStorage.fiveWordsSavedAnswers);
+        } catch(e) {
+            return cb();
+        }
+        for (var k in sa) {
+            if (typeof(k) == "string" && k.length == 1) {
+                var kl = k.toLowerCase();
+                if (sa[kl].answers && sa[kl].answers.length == 5) {
+                    MYANSWERS[kl] = {answers: sa[kl].answers};
+                }
+            }
+        }
+        Array.prototype.slice.call(document.querySelectorAll("#inner span")).forEach(function(f) {
+            var ma = MYANSWERS[f.innerHTML.toLowerCase()];
+            if (ma && ma.answers) {
+                var foundbad = false;
+                ma.answers.forEach(function(m) { if (!m) foundbad = true; });
+                if (!foundbad) { f.className = "completed"; }
+            }
+        });
+    }
+    cb(); 
+}
 
 function getInputFocusHandler(inp) {
     var before = inp.offsetHeight, root = document.getElementById("root");
@@ -39,6 +68,7 @@ function handleKey(inp) {
                 var destspans = document.querySelectorAll("#answer span");
                 var destspan = destspans[i];
                 if (destspan.className == "revealed") { return; }
+
                 var templated_value = "";
                 for (var j=0; j<inp.value.length; j++) {
                     if (ANSWERS[LEVEL].template[i].charAt(j) == "A") {
@@ -63,6 +93,14 @@ function handleKey(inp) {
                 Array.prototype.slice.call(destspans).forEach(function(s) {
                     if (s.className == "revealed") solved += 1;
                 });
+                if (solved == 5) {
+                    Array.prototype.slice.call(document.querySelectorAll("#inner span")).forEach(function(f) {
+                        if (f.innerHTML.toLowerCase() == LEVEL.toLowerCase()) { f.className = "completed"; }
+                    });
+                }
+
+                MYANSWERS[LEVEL.toLowerCase()].answers[i] = templated_value;
+                localStorage.setItem("fiveWordsSavedAnswers", JSON.stringify(MYANSWERS));
 
                 setTimeout(function() {
                     fi.style.opacity = 0;
@@ -96,10 +134,10 @@ function setBGForLevel() {
 }
 
 function chooseLetter(e) {
-    chooseLevel(e.target.innerHTML);
+    chooseLevel(e.target.innerHTML, e.target);
 }
 
-function chooseLevel(newlevel) {
+function chooseLevel(newlevel, letterScrollElement) {
     LEVEL = newlevel;
     document.getElementById("clue").innerHTML = decodeURIComponent(ANSWERS[LEVEL].clue);
     var ans = document.getElementById("answer");
@@ -108,7 +146,13 @@ function chooseLevel(newlevel) {
         var span = document.createElement("span");
         var strong = document.createElement("strong");
         var b = document.createElement("b");
-        strong.appendChild(document.createTextNode(ANSWERS[LEVEL].template[i]));
+        var textValue = ANSWERS[LEVEL].template[i];
+        console.log("checking", LEVEL.toLowerCase(), i, MYANSWERS[LEVEL.toLowerCase()].answers[i]);
+        if (MYANSWERS[LEVEL.toLowerCase()].answers[i]) { 
+            textValue = MYANSWERS[LEVEL.toLowerCase()].answers[i]; 
+            span.className = "revealed";
+        }
+        strong.appendChild(document.createTextNode(textValue));
         b.appendChild(document.createTextNode(ANSWERS[LEVEL].template[i]));
         var em = document.createElement("em");
         em.appendChild(document.createTextNode(new Array(ANSWERS[LEVEL].template[i].length+1).join("-")));
@@ -119,13 +163,24 @@ function chooseLevel(newlevel) {
         ans.appendChild(document.createTextNode(" "));
     }
     setBGForLevel();
+    if (!letterScrollElement) {
+        Array.prototype.slice.call(document.querySelectorAll("#inner span")).forEach(function(f) {
+            if (f.innerHTML == newlevel) {
+                letterScrollElement = f;
+            }
+        });
+    }
+    if (letterScrollElement) {
+        isc.scrollToElement(letterScrollElement, 200, true, true);
+    }
 }
 
 function attachEventHandlers(cb) {
     var inp = document.getElementById("maininput");
     inp.addEventListener("focus", getInputFocusHandler(inp), false);
     inp.addEventListener("keyup", handleKey(inp), false);
-    var myScroll = new IScroll('#letterchooser', { scrollX: true, scrollY: false, mouseWheel: true, tap: true });
+    isc = new IScroll('#letterchooser', { scrollX: true, scrollY: false, mouseWheel: true, 
+        tap: true });
     document.querySelector("#inner").addEventListener("tap", chooseLetter, false);
     document.addEventListener("touchmove", function(e) { e.preventDefault(); }, false);
     cb();

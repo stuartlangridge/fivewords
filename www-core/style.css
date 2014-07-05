@@ -90,7 +90,7 @@ html, body { overflow: hidden; }
 #inner {
   height: 44px;
   width: 1144px; /* 44 * 26 */
-  xpadding-left: 200px;
+  padding: 0 200px;
 }
 #inner span {
   display: block;
@@ -102,6 +102,9 @@ html, body { overflow: hidden; }
   font-size: 64px;
   font-family: Lekton, monospace;
   color: white;
+}
+#inner span.completed {
+  color: #dd4814;
 }
 
 /*
