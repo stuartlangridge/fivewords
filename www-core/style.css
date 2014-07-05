@@ -26,7 +26,13 @@
   text-align: center;
   font-family: sans-serif;
 }
-#maininput.begin {
+#floatinginput { 
+  background: transparent; 
+  display: none; 
+  -moz-transition: -moz-transform 0.3s ease-in-out, opacity 0.3s linear;
+  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.3s linear;
+  transition: transform 0.3s ease-in-out, opacity 0.3s linear;
+}#maininput.begin {
   position: absolute;
   top: 0;
   left: 0;
@@ -98,10 +104,4 @@
   top: 0; left: 0; right: 0; bottom: 0;
   background: #dfd;
   z-index: 2;
-}
-#floatinginput { 
-  background: rgba(0,255,0,0.5); display: none; 
-  -moz-transition: -moz-transform 0.3s ease-in-out, opacity 0.3s linear;
-  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.3s linear;
-  transition: transform 0.3s ease-in-out, opacity 0.3s linear;
 }

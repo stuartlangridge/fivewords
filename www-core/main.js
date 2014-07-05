@@ -46,6 +46,7 @@ function handleKey(inp) {
                     }
                 }
                 fi.value = templated_value;
+                destspan.innerHTML = templated_value;
                 inp.value = "";
                 fi.style.display = "block";
                 var destx = destspan.offsetLeft, desty = destspan.offsetTop + destspan.offsetParent.offsetTop;
