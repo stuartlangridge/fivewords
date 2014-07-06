@@ -30,9 +30,9 @@ html, body { overflow: hidden; }
   -webkit-mask: -webkit-linear-gradient(right, rgba(0,0,0,1) 0, rgba(0,0,0,0.7) 44px, rgba(0,0,0,0.3) 88px, rgba(0,0,0,0) 132px);
 }
 #rootbgfader {
-  -webkit-transition: opacity 1.3s linear;
-  -moz-transition: opacity 1.3s linear;
-  transition: opacity 1.3s linear;
+  -webkit-transition: opacity 1.3s ease-in-out;
+  -moz-transition: opacity 1.3s ease-in-out;
+  transition: opacity 1.3s ease-in-out;
 }
 
 
@@ -99,6 +99,10 @@ html, body { overflow: hidden; }
   font-size: 64px;
   font-family: Lekton, monospace;
   color: white;
+  -webkit-transition: color 0.3s ease;
+  -moz-transition: color 0.3s ease;
+  transition: color 0.3s ease;
+  text-shadow: black 2px 2px 4px;
 }
 #inner span.completed {
   color: #dd4814;
@@ -134,18 +138,24 @@ html, body { overflow: hidden; }
 }
 #answer span {
   position: relative;
+  display: inline-block; 
+  line-height: 43px;
 }
 #answer span b {
   color: transparent;
+  display: inline-block;
+  height: 40px;
+  font-weight: normal;
 }
 #answer span em, #answer span strong {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   font-weight: normal;
-  font-variant: normal;
+  font-style: normal;
   -moz-transition: opacity 0.3s linear;
   -webkit-transition: opacity 0.3s linear;
   transition: opacity 0.3s linear;
+  white-space: nowrap;
 }
 #answer span strong { opacity: 0; }
 #answer span.revealed em {
@@ -154,6 +164,7 @@ html, body { overflow: hidden; }
 #answer span.revealed strong {
   opacity: 1;
   color: white;
+  text-shadow: black 2px 2px 2px; 
 }
 #coverall {
   position: absolute;
@@ -194,3 +205,8 @@ header button {
   font-size: 24px;
   z-index: 2;
 }
+
+/*
+#floatinginput { background-color: rgba(255,0,0,0.2); }
+#answer span { background-color: rgba(0,255,0,0.2); }
+*/

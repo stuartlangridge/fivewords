@@ -84,6 +84,8 @@ function handleKey(inp) {
                 var destx = destspan.offsetLeft, desty = destspan.offsetTop + destspan.offsetParent.offsetTop;
                 var curx = fi.offsetLeft, cury = fi.offsetTop;
                 var dx = (destx + (destspan.offsetWidth / 2)) - (curx + (fi.offsetWidth / 2)), dy = desty - cury;
+                console.log(desty, cury, dy);
+                dy = dy + 1; // fudge factor.
                 fi.style.MozTransform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
                 fi.style.webkitTransform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
                 fi.style.transform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
@@ -105,7 +107,7 @@ function handleKey(inp) {
                 setTimeout(function() {
                     fi.style.opacity = 0;
                     destspan.className = "revealed";
-                    setBGForLevel();
+                    setBGForLevel({fade: true});
                     setTimeout(function() {
                         fi.style.display = "none";
                         fi.style.MozTransform = "translateX(0px) translateY(0px)";
@@ -120,21 +122,27 @@ function handleKey(inp) {
     };
 }
 
-function setBGForLevel() {
+function setBGForLevel(options) {
     var answered = document.querySelectorAll("#answer span.revealed").length;
     var img = "bgimages/" + "bg-"  + LEVEL.toLowerCase() + "-" + (5-answered) + ".jpg";
     var i = new Image();
     i.onload = function() {
         var imgurl = "url(" + img + ")";
-        document.getElementById("rootbgfader").style.backgroundImage = document.getElementById("rootbg").style.backgroundImage;
-        document.getElementById("rootbgfader").style.opacity = 0;
-        document.getElementById("rootbg").style.backgroundImage = imgurl;
-        setTimeout(function() {
+        if (options.fade) {
+            document.getElementById("rootbgfader").style.backgroundImage = document.getElementById("rootbg").style.backgroundImage;
+            document.getElementById("rootbgfader").style.opacity = 0;
+            document.getElementById("rootbg").style.backgroundImage = imgurl;
+            setTimeout(function() {
+                document.getElementById("letterchooserfadeleft").style.backgroundImage = imgurl;
+                document.getElementById("letterchooserfaderight").style.backgroundImage = imgurl;
+                document.getElementById("rootbgfader").style.backgroundImage = "none";
+                document.getElementById("rootbgfader").style.opacity = 1;
+            }, 1300);
+        } else {
+            document.getElementById("rootbg").style.backgroundImage = imgurl;
             document.getElementById("letterchooserfadeleft").style.backgroundImage = imgurl;
             document.getElementById("letterchooserfaderight").style.backgroundImage = imgurl;
-            document.getElementById("rootbgfader").style.backgroundImage = "none";
-            document.getElementById("rootbgfader").style.opacity = 1;
-        }, 1300);
+        }
     };
     i.src = img;
 }
@@ -172,7 +180,7 @@ function chooseLevel(newlevel, letterScrollElement) {
         ans.appendChild(span);
         ans.appendChild(document.createTextNode(" "));
     }
-    setBGForLevel();
+    setBGForLevel({fade: false});
     if (!letterScrollElement) {
         Array.prototype.slice.call(document.querySelectorAll("#inner span")).forEach(function(f) {
             if (f.innerHTML == newlevel) {

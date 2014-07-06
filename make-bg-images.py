@@ -17,7 +17,7 @@ for l in string.uppercase:
     # Now convert them all
     dest = os.path.join(os.path.split(__file__)[0], "www-core", "bgimages", "bg-%s-%s.jpg")
     for number_answered in [5,4,3,2,1,0]:
-        blur = number_answered * 5
+        blur = number_answered * 10
         destimg = dest % (l.lower(), number_answered)
         if number_answered == 0:
             cmd = "cp %s %s" % (existing, destimg)
