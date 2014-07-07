@@ -2,6 +2,18 @@
   font-family: 'Lekton';
   src: url('Lekton-Regular.ttf');
 }
+@font-face {
+    font-family: 'SourceCodePro';
+    src: url('SourceCodePro-Light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'SourceCodePro';
+    src: url('SourceCodePro-ExtraLight.otf') format('opentype');
+    font-weight: 100;
+    font-style: normal;
+}
 
 html, body { overflow: hidden; }
 
@@ -21,13 +33,13 @@ html, body { overflow: hidden; }
 }
 #letterchooserfadeleft {
   pointer-events: none;
-  -webkit-clip-path: polygon(0px 50px, 45% 50px, 45% 98px, 0 98px); /* cover letterchooser */
-  -webkit-mask: -webkit-linear-gradient(left, rgba(0,0,0,1) 0, rgba(0,0,0,0.7) 44px, rgba(0,0,0,0.3) 88px, rgba(0,0,0,0) 132px);
+  -webkit-clip-path: polygon(0px 50px, 47% 50px, 47% 98px, 0 98px); /* cover letterchooser */
+  -webkit-mask: -webkit-linear-gradient(left, rgba(0,0,0,0.9) 0, rgba(0,0,0,0.6) 41%, rgba(0,0,0,0) 47%);
 }
 #letterchooserfaderight {
   pointer-events: none;
-  -webkit-clip-path: polygon(55% 50px, 100% 50px, 100% 98px, 55% 98px); /* cover letterchooser */
-  -webkit-mask: -webkit-linear-gradient(right, rgba(0,0,0,1) 0, rgba(0,0,0,0.7) 44px, rgba(0,0,0,0.3) 88px, rgba(0,0,0,0) 132px);
+  -webkit-clip-path: polygon(53% 50px, 100% 50px, 100% 98px, 53% 98px); /* cover letterchooser */
+  -webkit-mask: -webkit-linear-gradient(right, rgba(0,0,0,0.9) 0, rgba(0,0,0,0.6) 41%, rgba(0,0,0,0) 47%);
 }
 #rootbgfader {
   -webkit-transition: opacity 1.3s ease-in-out;
@@ -54,7 +66,8 @@ html, body { overflow: hidden; }
   font-size: 30px;
   line-height: 30px;
   text-align: center;
-  font-family: Lekton, monospace;
+  font-family: SourceCodePro, monospace;
+  font-weight: 300;
 }
 #floatinginput { 
   background: transparent; 
@@ -94,15 +107,15 @@ html, body { overflow: hidden; }
   width: 44px;
   height: 44px;
   float: left;
-  line-height: 52px;
+  line-height: 40px;
   text-align: center;
   font-size: 64px;
-  font-family: Lekton, monospace;
+  font-family: SourceCodePro, monospace;
+  font-weight: 300;
   color: white;
   -webkit-transition: color 0.3s ease;
   -moz-transition: color 0.3s ease;
   transition: color 0.3s ease;
-  text-shadow: black 2px 2px 4px;
 }
 #inner span.completed {
   color: #dd4814;
@@ -124,7 +137,8 @@ html, body { overflow: hidden; }
   right: 0;
   height: 80px;
   text-align: center;
-  font-family: Lekton, monospace;
+  font-family: SourceCodePro, monospace;
+  font-weight: 300;
   color: white;
 }
 #clue {
@@ -164,7 +178,6 @@ html, body { overflow: hidden; }
 #answer span.revealed strong {
   opacity: 1;
   color: white;
-  text-shadow: black 2px 2px 2px; 
 }
 #coverall {
   position: absolute;
