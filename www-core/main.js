@@ -1,4 +1,4 @@
-var LEVEL = "A", isc, MYANSWERS = {};
+var LEVEL = "A", isc, MYANSWERS = {}, PULSING = "none";
 
 function loadSavedGame(cb) { 
     "abcdefghijklmnoqrstuvwxyz".split("").forEach(function(l) {
@@ -84,7 +84,6 @@ function handleKey(inp) {
                 var destx = destspan.offsetLeft, desty = destspan.offsetTop + destspan.offsetParent.offsetTop;
                 var curx = fi.offsetLeft, cury = fi.offsetTop;
                 var dx = (destx + (destspan.offsetWidth / 2)) - (curx + (fi.offsetWidth / 2)), dy = desty - cury;
-                console.log(desty, cury, dy);
                 dy = dy + 1; // fudge factor.
                 fi.style.MozTransform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
                 fi.style.webkitTransform = "translateX(" + (dx) + "px) translateY(" + (dy) + "px)";
@@ -99,6 +98,10 @@ function handleKey(inp) {
                     Array.prototype.slice.call(document.querySelectorAll("#inner span")).forEach(function(f) {
                         if (f.innerHTML.toLowerCase() == LEVEL.toLowerCase()) { f.className = "completed"; }
                     });
+                    if (PULSING == "none") {
+                        document.querySelectorAll("#inner span")[1].className = "pulse";
+                        PULSING = "now";
+                    }
                 }
 
                 MYANSWERS[LEVEL.toLowerCase()].answers[i] = templated_value;
@@ -159,6 +162,10 @@ function chooseLetter(e) {
 
 function chooseLevel(newlevel, letterScrollElement) {
     LEVEL = newlevel;
+    if (PULSING == "now") {
+        document.querySelectorAll("#inner span")[1].className = "";
+        PULSING = "done";
+    }
     document.getElementById("clue").innerHTML = decodeURIComponent(ANSWERS[LEVEL].clue);
     var ans = document.getElementById("answer");
     ans.innerHTML = "";

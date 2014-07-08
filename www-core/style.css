@@ -118,10 +118,19 @@ html, body { overflow: hidden; }
   transition: color 0.3s ease;
   text-shadow: #aaf 0px 0px 5px;
 }
+#inner span.pulse {
+  -webkit-animation: pulse 1s alternate infinite;
+  -moz-animation: pulse 1s alternate infinite;
+  animation: pulse 1s alternate infinite;
+}
 #inner span.completed {
   color: #dd4814;
   text-shadow: #dd4814 0px 0px 5px;
 }
+
+@-webkit-keyframes pulse { from { color: white; } to { color: #afa; } }
+@-moz-keyframes pulse { from { color: white; } to { color: #afa; } }
+@keyframes pulse { from { color: white; } to { color: #afa; } }
 
 /*
 #inner span:nth-child(2n) {
