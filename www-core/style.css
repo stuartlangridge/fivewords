@@ -120,6 +120,7 @@ html, body { overflow: hidden; }
 }
 #inner span.completed {
   color: #dd4814;
+  text-shadow: #dd4814 0px 0px 5px;
 }
 
 /*
