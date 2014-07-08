@@ -116,6 +116,7 @@ html, body { overflow: hidden; }
   -webkit-transition: color 0.3s ease;
   -moz-transition: color 0.3s ease;
   transition: color 0.3s ease;
+  text-shadow: #aaf 0px 0px 5px;
 }
 #inner span.completed {
   color: #dd4814;
@@ -189,7 +190,7 @@ html, body { overflow: hidden; }
 
 header {
   position: absolute;
-  top: 0; left: 0; right: 0; height: 44px; background: rgba(0,0,0,0.5);
+  top: 0; left: 0; right: 0; height: 44px;
   margin: 0;
   padding: 0;
 }
