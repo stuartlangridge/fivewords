@@ -53,6 +53,9 @@ function getInputFocusHandler(inp) {
             document.body.scrollTop = 0;
           }
           document.getElementById("coverall").style.display = "none";
+          if (document.getElementById("root").classList.contains("solved")) {
+            inp.blur();
+          }
         }, 250);
     };
 }
@@ -98,10 +101,12 @@ function handleKey(inp) {
                     Array.prototype.slice.call(document.querySelectorAll("#inner span")).forEach(function(f) {
                         if (f.innerHTML.toLowerCase() == LEVEL.toLowerCase()) { f.className = "completed"; }
                     });
+                    document.getElementById("root").className = "solved";
                     if (PULSING == "none") {
                         document.querySelectorAll("#inner span")[1].className = "pulse";
                         PULSING = "now";
                     }
+                    document.getElementById("maininput").blur();
                 }
 
                 MYANSWERS[LEVEL.toLowerCase()].answers[i] = templated_value;
@@ -169,6 +174,7 @@ function chooseLevel(newlevel, letterScrollElement) {
     document.getElementById("clue").innerHTML = decodeURIComponent(ANSWERS[LEVEL].clue);
     var ans = document.getElementById("answer");
     ans.innerHTML = "";
+    var solved = 0;
     for (var i=0; i<ANSWERS[LEVEL].template.length; i++) {
         var span = document.createElement("span");
         var strong = document.createElement("strong");
@@ -177,6 +183,7 @@ function chooseLevel(newlevel, letterScrollElement) {
         if (MYANSWERS[LEVEL.toLowerCase()].answers[i]) { 
             textValue = MYANSWERS[LEVEL.toLowerCase()].answers[i]; 
             span.className = "revealed";
+            solved += 1;
         }
         strong.appendChild(document.createTextNode(textValue));
         b.appendChild(document.createTextNode(ANSWERS[LEVEL].template[i]));
@@ -187,6 +194,15 @@ function chooseLevel(newlevel, letterScrollElement) {
         span.appendChild(b);
         ans.appendChild(span);
         ans.appendChild(document.createTextNode(" "));
+    }
+    if (solved == 5) { 
+        document.getElementById("root").className = "solved";
+        document.getElementById("maininput").blur();
+    } else {
+        document.getElementById("root").className = "";
+        if (document.getElementById("maininput").classList.contains("game")) {
+            document.getElementById("maininput").focus();
+        }
     }
     setBGForLevel({fade: false});
     if (!letterScrollElement) {

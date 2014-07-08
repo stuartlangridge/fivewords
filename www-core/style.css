@@ -197,6 +197,20 @@ html, body { overflow: hidden; }
   z-index: 2;
 }
 
+#root.solved #answer {
+  top: 134px;
+  height: 120px;
+  font-size: 24px;
+  font-family: Ubuntu, sans-serif;
+}
+#root.solved #answer span, #root.solved #answer span b, #root.solved #answer span strong {
+  font-size: 24px;
+  font-family: sans-serif;
+  font-weight: normal;
+}
+#root.solved #maininput:not(.begin), #root.solved #clue {
+  visibility: hidden;
+}
 
 header {
   position: absolute;
