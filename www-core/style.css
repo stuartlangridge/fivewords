@@ -172,7 +172,7 @@ html, body { overflow: hidden; }
   white-space: nowrap;
 }
 #answer span strong { opacity: 0; }
-#answer span.revealed em {
+#answer span.revealed em, #answer span.revealing em {
   opacity: 0;
 }
 #answer span.revealed strong {

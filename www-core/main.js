@@ -104,6 +104,7 @@ function handleKey(inp) {
                 MYANSWERS[LEVEL.toLowerCase()].answers[i] = templated_value;
                 localStorage.setItem("fiveWordsSavedAnswers", JSON.stringify(MYANSWERS));
 
+                destspan.className = "revealing";
                 setTimeout(function() {
                     fi.style.opacity = 0;
                     destspan.className = "revealed";
