@@ -116,21 +116,20 @@ html, body { overflow: hidden; }
   -webkit-transition: color 0.3s ease;
   -moz-transition: color 0.3s ease;
   transition: color 0.3s ease;
-  text-shadow: #aaf 0px 0px 5px;
 }
-#inner span.pulse {
-  -webkit-animation: pulse 1s alternate infinite;
-  -moz-animation: pulse 1s alternate infinite;
-  animation: pulse 1s alternate infinite;
+#inner.pulse span:not(.completed) {
+  -webkit-animation: pulse 0.6s alternate infinite;
+  -moz-animation: pulse 0.6s alternate infinite;
+  animation: pulse 0.6s alternate infinite;
 }
 #inner span.completed {
   color: #dd4814;
   text-shadow: #dd4814 0px 0px 5px;
 }
 
-@-webkit-keyframes pulse { from { color: white; } to { color: #afa; } }
-@-moz-keyframes pulse { from { color: white; } to { color: #afa; } }
-@keyframes pulse { from { color: white; } to { color: #afa; } }
+@-webkit-keyframes pulse { from { color: white; } to { color: black; } }
+@-moz-keyframes pulse { from { color: white; } to { color: black; } }
+@keyframes pulse { from { color: white; } to { color: black; } }
 
 /*
 #inner span:nth-child(2n) {

@@ -1,4 +1,4 @@
-var LEVEL = "A", isc, MYANSWERS = {}, PULSING = "none";
+var LEVEL = "A", isc, MYANSWERS = {};
 
 function loadSavedGame(cb) { 
     "abcdefghijklmnoqrstuvwxyz".split("").forEach(function(l) {
@@ -102,10 +102,7 @@ function handleKey(inp) {
                         if (f.innerHTML.toLowerCase() == LEVEL.toLowerCase()) { f.className = "completed"; }
                     });
                     document.getElementById("root").className = "solved";
-                    if (PULSING == "none") {
-                        document.querySelectorAll("#inner span")[1].className = "pulse";
-                        PULSING = "now";
-                    }
+                    document.getElementById("inner").classList.add("pulse");
                     document.getElementById("maininput").blur();
                 }
 
@@ -167,10 +164,7 @@ function chooseLetter(e) {
 
 function chooseLevel(newlevel, letterScrollElement) {
     LEVEL = newlevel;
-    if (PULSING == "now") {
-        document.querySelectorAll("#inner span")[1].className = "";
-        PULSING = "done";
-    }
+    document.getElementById("inner").classList.remove("pulse");
     document.getElementById("clue").innerHTML = decodeURIComponent(ANSWERS[LEVEL].clue);
     var ans = document.getElementById("answer");
     ans.innerHTML = "";
